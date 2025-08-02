@@ -32,7 +32,7 @@ from qiskit_aer import AerSimulator
 #  NEW THEORY & DYNAMIC-EXPLANATION CLASSES
 # ────────────────────────────────────────────────────────────────────────────────
 class TheoryContent:
-    """Renders progressively layered theory panels."""
+    """Renders progressively layered theory panels with detailed, accessible explanations."""
 
     # --------------------------------------------------------------------------
     # High-level concept introductions
@@ -52,28 +52,95 @@ class TheoryContent:
     # --------------------------------------------------------------------------
     def render_mathematical_foundation(self, level: str) -> None:
         if level == "beginner":
+            st.subheader("🧮 The Math Behind Quantum States")
             st.latex(r"|\,\psi\rangle = \alpha\,|0\rangle + \beta\,|1\rangle")
             st.markdown(
-                "Here **α** and **β** are complex numbers whose squared magnitudes give "
-                "the probabilities of measuring the photon in the vertical (|0⟩) or "
-                "horizontal (|1⟩) state."
+                """
+                **Breaking this down step by step:**
+                
+                • **|ψ⟩** represents our quantum state (like a photon's polarization)
+                • **|0⟩** and **|1⟩** are the two basic states (think vertical and horizontal polarization)
+                • **α** and **β** are complex numbers that determine how much of each basic state we have
+                
+                **What do α and β tell us?**
+                • **|α|²** = probability of measuring the photon as vertically polarized (|0⟩)
+                • **|β|²** = probability of measuring the photon as horizontally polarized (|1⟩)
+                • These probabilities always add up to 1: |α|² + |β|² = 1
+                
+                **Real-world example:** If α = 0.8 and β = 0.6, then there's a 64% chance (0.8²) 
+                of finding the photon vertically polarized and 36% chance (0.6²) horizontally.
+                """
             )
+            
         elif level == "intermediate":
+            st.subheader("🎯 Born's Rule and State Parameters")
             st.markdown(
-                "_Born’s rule_:  \n"
-                r"\(P(|0\rangle)=|\alpha|^2,\;\;P(|1\rangle)=|\beta|^2\)", unsafe_allow_html=True
+                """
+                **Born's Rule** connects quantum math to experimental probabilities:
+                """
+            )
+            st.latex(r"P(|0\rangle)=|\alpha|^2,\;\;P(|1\rangle)=|\beta|^2")
+            st.markdown(
+                """
+                **Parameterizing quantum states using angles:**
+                """
             )
             st.latex(r"\alpha = \cos\frac{\theta}{2},\qquad \beta = e^{i\phi}\sin\frac{\theta}{2}")
             st.markdown(
-                "These relations map directly onto the Bloch‐sphere coordinates "
-                "with polar angle θ and azimuthal angle φ."
+                """
+                **Understanding the parameters:**
+                
+                • **θ (theta)**: Controls the **probability balance** between |0⟩ and |1⟩
+                  - θ = 0°: Pure |0⟩ state (100% probability of measuring 0)
+                  - θ = 90°: Equal superposition (50% chance each)
+                  - θ = 180°: Pure |1⟩ state (100% probability of measuring 1)
+                
+                • **φ (phi)**: Controls the **quantum phase** relationship
+                  - Doesn't affect probabilities in simple measurements
+                  - Becomes crucial when measuring in different bases
+                  - Creates interference effects in quantum experiments
+                
+                **Connection to Bloch Sphere:**
+                These θ and φ angles directly map to latitude and longitude on the Bloch sphere,
+                giving us a beautiful geometric picture of quantum states!
+                """
             )
+            
         else:  # advanced
-            st.markdown("**Unitary rotations** on the Bloch sphere:")
+            st.subheader("🔄 Unitary Rotations and Quantum Operations")
+            st.markdown(
+                """
+                **Advanced Mathematical Framework:**
+                
+                Any quantum operation can be represented as a rotation on the Bloch sphere:
+                """
+            )
             st.latex(r"U(\hat{n},\theta)=e^{-i\theta\hat{n}\cdot\vec{\sigma}/2}")
             st.markdown(
-                "where \(\\vec{\\sigma}\) are Pauli matrices and **ẑ**, **x̂**, **ŷ** "
-                "correspond to rectilinear, diagonal, and circular bases."
+                """
+                **Decoding this formula:**
+                
+                • **U**: Unitary operator (preserves quantum probabilities)
+                • **n̂**: Unit vector defining rotation axis
+                • **θ**: Rotation angle
+                • **σ⃗**: Vector of Pauli matrices (σₓ, σᵧ, σᵧ)
+                
+                **Physical meaning of rotation axes:**
+                
+                • **ẑ-axis rotations**: Change relative phase (φ parameter)
+                  - Used in rectilinear basis (vertical/horizontal) measurements
+                  
+                • **x̂-axis rotations**: Mix |0⟩ and |1⟩ amplitudes
+                  - Used in diagonal basis (+45°/-45°) measurements
+                  
+                • **ŷ-axis rotations**: Create circular polarization states
+                  - Used in circular basis (left/right circular) measurements
+                
+                **Why this matters:**
+                Different measurement bases correspond to measuring along different 
+                Bloch sphere axes. The uncertainty principle emerges naturally from 
+                the geometry of this sphere!
+                """
             )
 
     # --------------------------------------------------------------------------
@@ -81,16 +148,57 @@ class TheoryContent:
     # --------------------------------------------------------------------------
     def render_applications_context(self, concept: str) -> None:
         if concept == "polarization_basics":
+            st.subheader("🌍 Real-World Applications")
             st.markdown(
-                "• **Quantum communications** use single-photon polarization to carry qubit "
-                "information through fibres or free-space links.  \n"
-                "• In **microscopy** and **remote sensing**, polarization contrast enhances "
-                "material discrimination beyond intensity-only images."
+                """
+                **Quantum Communications:**
+                • Single photons carry information through their polarization state
+                • Fiber optic cables preserve polarization over long distances
+                • Free-space quantum links use atmospheric transmission
+                • Each photon can carry one qubit of quantum information
+                
+                **Example:** A satellite beaming down quantum-encrypted messages uses 
+                polarized photons where vertical = bit 0, horizontal = bit 1.
+                
+                **Scientific Imaging:**
+                • Polarization reveals material properties invisible to regular cameras
+                • Medical imaging uses polarization to detect tissue stress and damage
+                • Astronomical observations use polarization to study magnetic fields
+                • Quality control in manufacturing detects internal stresses in materials
+                
+                **Example:** Polarized sunglasses work by blocking horizontally polarized 
+                light reflected from surfaces, reducing glare.
+                """
             )
+            
         elif concept == "qkd":
+            st.subheader("🔐 Quantum Key Distribution Security")
             st.markdown(
-                "Polarization underpins **BB84 QKD**. Orthogonal bases prevent an eavesdropper "
-                "from measuring without introducing errors that Alice and Bob can detect."
+                """
+                **How BB84 Uses Polarization for Security:**
+                
+                **The Basic Idea:**
+                • Alice sends photons in random polarization states
+                • Bob measures them in randomly chosen bases
+                • They publicly compare which bases they used (not the results!)
+                • They keep only measurements where they used the same basis
+                
+                **Security Principle:**
+                • If Eve tries to intercept and measure photons, she must guess the basis
+                • Wrong basis → she disturbs the quantum state
+                • Alice and Bob detect this disturbance as increased error rate
+                • Above ~11% error rate → abort the key, Eve detected!
+                
+                **Why Orthogonal Bases Matter:**
+                • Rectilinear basis: |0⟩ (vertical), |1⟩ (horizontal)
+                • Diagonal basis: |+⟩ (45°), |-⟩ (-45°)
+                • These bases are "mutually unbiased" - measuring in the wrong basis 
+                  gives completely random results
+                • This randomness is what protects against eavesdropping!
+                
+                **Real-world impact:** Banks and governments use QKD for ultra-secure 
+                communications that are protected by the laws of physics themselves.
+                """
             )
 
     # --------------------------------------------------------------------------
@@ -98,10 +206,32 @@ class TheoryContent:
     # --------------------------------------------------------------------------
     def render_quantum_principles(self, principle: str) -> None:
         if principle == "uncertainty":
-            st.latex(r"\sigma_X\sigma_Z \ge \frac{1}{2}|\langle[Y,Z]\rangle|")
+            st.subheader("⚖️ The Uncertainty Principle in Action")
+            st.latex(r"\sigma_X\sigma_Z \ge \frac{1}{2}|\langle[X,Z]\rangle|")
             st.markdown(
-                "Measuring in incompatible bases trades precision: knowing polarization "
-                "perfectly in one basis maximises uncertainty in the conjugate basis."
+                """
+                **What This Formula Means:**
+                
+                • **σₓ, σᵧ**: Standard deviations (uncertainties) in X and Z measurements
+                • **[X,Z]**: Commutator showing how incompatible these measurements are
+                • **The inequality**: You cannot simultaneously know both with perfect precision
+                
+                **In Polarization Terms:**
+                • Perfect knowledge of vertical/horizontal polarization means 
+                  maximum uncertainty about diagonal polarization
+                • Perfect knowledge of diagonal polarization means maximum 
+                  uncertainty about circular polarization
+                • This isn't a limitation of our instruments - it's fundamental to nature!
+                
+                **Intuitive Picture:**
+                Imagine trying to determine if a spinning coin shows heads or tails 
+                while it's spinning. The "direction" you choose to look determines 
+                what you can know, but you can't know everything at once.
+                
+                **Practical Consequence:**
+                This principle is what makes quantum cryptography secure and enables 
+                quantum computing's advantages over classical computation.
+                """
             )
 
     # --------------------------------------------------------------------------
@@ -110,66 +240,249 @@ class TheoryContent:
     def _intro_polarization(self, level: str) -> None:
         st.subheader("🔍 What is Photon Polarization?")
         st.markdown(
-            "**Polarization** describes the oscillation direction of the electric-field "
-            "vector. In quantum mechanics each single photon behaves as a two-state system, "
-            "making polarization a natural qubit."
+            """
+            **The Basics:**
+            Light is an electromagnetic wave with oscillating electric and magnetic fields. 
+            **Polarization** describes the direction in which the electric field oscillates 
+            as the light wave travels through space.
+            
+            **Classical vs Quantum Picture:**
+            • **Classical:** A light beam has a definite polarization direction
+            • **Quantum:** A single photon can be in a "superposition" of multiple 
+              polarization directions simultaneously!
+            
+            **Why Polarization Makes a Perfect Qubit:**
+            • Two fundamental states: vertical (|0⟩) and horizontal (|1⟩) polarization
+            • Can create superpositions: photon is "both vertical AND horizontal" until measured
+            • Measurement forces the photon to "choose" one direction
+            • This binary nature with quantum superposition is ideal for quantum computing
+            
+            **Everyday Examples:**
+            • Polarized sunglasses block horizontally polarized reflected light
+            • LCD screens use polarization to control which pixels appear bright or dark
+            • 3D movies use polarization to send different images to each eye
+            """
         )
         self.render_mathematical_foundation(level)
         self.render_applications_context("polarization_basics")
 
     def _intro_measurement(self, level: str) -> None:
-        st.subheader("📐 Measurement Theory Refresher")
+        st.subheader("📐 How Quantum Measurement Works")
         st.markdown(
-            "Selecting a measurement basis corresponds to rotating the Bloch sphere "
-            "before the **projective measurement**. The state _collapses_ onto |0⟩ or |1⟩."
+            """
+            **The Measurement Process:**
+            
+            1. **Before measurement:** Photon exists in superposition of multiple states
+            2. **Choose measurement basis:** This is like choosing which "question" to ask
+            3. **Measurement occurs:** The quantum state "collapses" to a definite answer
+            4. **After measurement:** Photon is now in a definite state
+            
+            **Basis Selection = Bloch Sphere Rotation:**
+            • Each measurement basis corresponds to a different axis on the Bloch sphere
+            • Choosing a basis is like rotating the sphere before measurement
+            • We always measure along the Z-axis after rotation
+            • Different rotations reveal different properties of the quantum state
+            
+            **Key Insight:**
+            The measurement doesn't just reveal a pre-existing property - it actively 
+            changes the quantum state! This is fundamentally different from classical 
+            physics where measurement is passive observation.
+            
+            **Real-world Analogy:**
+            Like asking someone "Are you happy?" - the question itself might influence 
+            their emotional state and the answer they give.
+            """
         )
         if level != "beginner":
             self.render_quantum_principles("uncertainty")
 
     def _intro_bloch(self, level: str) -> None:
-        st.subheader("🌀 Visualising States on the Bloch Sphere")
+        st.subheader("🌀 The Bloch Sphere: A Map of Quantum States")
         st.markdown(
-            "Any qubit state maps to a point on the unit sphere. Rotations reflect "
-            "unitary operations, and latitude encodes population while longitude "
-            "encodes relative phase."
+            """
+            **What is the Bloch Sphere?**
+            The Bloch sphere is a beautiful geometric representation where every possible 
+            quantum state of a qubit corresponds to exactly one point on a unit sphere.
+            
+            **Understanding the Geography:**
+            
+            • **North Pole (top):** |0⟩ state (e.g., vertical polarization)
+            • **South Pole (bottom):** |1⟩ state (e.g., horizontal polarization)
+            • **Equator:** Equal superposition states (50% chance of each outcome)
+            • **Latitude:** Controls the probability balance between |0⟩ and |1⟩
+            • **Longitude:** Controls the quantum phase relationship
+            
+            **Why This Visualization is Powerful:**
+            
+            • **Rotations = Operations:** Any quantum gate is a rotation of this sphere
+            • **Measurement = Projection:** Choose an axis and project the state onto it
+            • **Distance = Distinguishability:** Further apart = easier to tell states apart
+            • **Antipodal Points:** Opposite points on sphere are perfectly distinguishable
+            
+            **Interactive Understanding:**
+            As you adjust parameters in our simulator, watch how the point moves on 
+            the Bloch sphere. This gives you intuition for how quantum states transform!
+            
+            **Fun Fact:**
+            The Bloch sphere captures all possible quantum states in a simple, elegant 
+            geometry. It's one of the most beautiful concepts in quantum mechanics!
+            """
         )
         self.render_mathematical_foundation(level)
 
     def _intro_qkd(self, level: str) -> None:
-        st.subheader("🔒 Quantum Key Distribution (BB84)")
+        st.subheader("🔒 Quantum Key Distribution: Unbreakable Codes")
         st.markdown(
-            "Four polarization states in two mutually unbiased bases carry raw key bits. "
-            "Measurement errors above a threshold signal eavesdropping."
+            """
+            **The BB84 Protocol Step-by-Step:**
+            
+            **Setup:**
+            • Alice and Bob want to share a secret key
+            • Eve might be listening on their communication channel
+            • They use quantum physics to detect any eavesdropping attempt
+            
+            **The Process:**
+            
+            1. **Alice's Preparation:**
+               - Randomly chooses bits (0 or 1) for her secret key
+               - Randomly chooses measurement bases (rectilinear or diagonal)
+               - Encodes each bit using polarization in the chosen basis
+               - Sends the polarized photons to Bob
+            
+            2. **Bob's Measurement:**
+               - Randomly chooses measurement bases for each incoming photon
+               - Measures the polarization and records the result
+               - Sometimes his basis matches Alice's, sometimes it doesn't
+            
+            3. **Classical Communication:**
+               - Alice and Bob publicly announce which bases they used (not the results!)
+               - They keep only the measurements where they used the same basis
+               - These matching cases become their shared secret key
+            
+            4. **Security Check:**
+               - They sacrifice some key bits to check for errors
+               - Low error rate ≈ secure channel
+               - High error rate ≈ eavesdropping detected!
+            
+            **The Quantum Security Guarantee:**
+            If Eve tries to measure the photons, quantum mechanics ensures she 
+            will introduce detectable errors. The laws of physics themselves 
+            protect the communication!
+            """
         )
         if level == "advanced":
+            st.markdown("**Security Bound:**")
             st.latex(r"P_{\text{err}}^{\text{Eve}}\ge \frac{1}{4}")
+            st.markdown(
+                """
+                **Mathematical Security Analysis:**
+                
+                • If Eve intercepts and measures photons, she must guess the basis
+                • 50% chance of guessing correctly for each photon
+                • When she guesses wrong, she creates a 50% error rate for that photon
+                • Overall, this creates at least 25% error rate in Alice and Bob's data
+                • Any error rate significantly above background noise indicates eavesdropping
+                
+                **Real-world Implementations:**
+                • Commercial QKD systems operate over hundreds of kilometers
+                • Used by banks, governments, and research institutions
+                • Continuously monitor error rates to ensure security
+                • Can generate fresh encryption keys on demand
+                """
+            )
+
+
 # ────────────────────────────────────────────────────────────────────────────────
 
 
 class DynamicExplanations:
-    """Generates context-aware, real-time explanations."""
+    """Generates context-aware, real-time explanations with detailed feedback."""
 
     def __init__(self):
         self._last_params: Dict[str, float] = {}
+        self._interaction_count = 0
 
     # --------------------------------------------------------------------------
     # Before interaction
     # --------------------------------------------------------------------------
     def before_interaction(self, concept: str) -> None:
-        st.info(f"• _Ready to explore **{concept.replace('_', ' ').title()}**? "
-                "Adjust the controls to predict outcomes before running the experiment._")
+        concept_titles = {
+            "polarization_basics": "Photon Polarization Fundamentals",
+            "measurement": "Quantum Measurement Theory",
+            "bloch": "Bloch Sphere Visualization",
+            "qkd": "Quantum Key Distribution"
+        }
+        
+        title = concept_titles.get(concept, concept.replace('_', ' ').title())
+        
+        st.info(
+            f"""
+            🚀 **Ready to explore {title}?**
+            
+            **How to get the most from this simulation:**
+            • Adjust the controls below and observe how they affect the quantum state
+            • Try to predict the measurement outcomes before running the experiment
+            • Pay attention to how the Bloch sphere visualization changes
+            • Compare results across different measurement bases
+            
+            **Pro tip:** Start with extreme values (like θ=0° or θ=180°) to see clear 
+            effects, then explore intermediate values to understand the transitions!
+            """
+        )
 
     # --------------------------------------------------------------------------
     # During interaction (sliders, etc.)
     # --------------------------------------------------------------------------
     def explain_parameter_change(self, parameter: str, new: float) -> None:
         old = self._last_params.get(parameter, new)
-        if new != old:
+        if abs(new - old) > 0.5:  # Only explain significant changes
             delta = new - old
             direction = "increased" if delta > 0 else "decreased"
-            st.write(f"🔄 **{parameter.upper()}** {direction} to {new:.1f}. "
-                     f"This will rotate the Bloch vector {abs(delta):.1f}°.")
+            
+            explanations = {
+                "theta": {
+                    "meaning": "probability balance between |0⟩ and |1⟩ states",
+                    "effect": "This changes the latitude on the Bloch sphere",
+                    "prediction": self._predict_theta_effect(new)
+                },
+                "phi": {
+                    "meaning": "quantum phase relationship",
+                    "effect": "This rotates around the Bloch sphere's vertical axis",
+                    "prediction": "Phase affects interference in non-rectilinear measurements"
+                },
+                "shots": {
+                    "meaning": "number of measurement repetitions",
+                    "effect": "More shots give better statistical accuracy",
+                    "prediction": f"Expect ±{100/np.sqrt(new):.1f}% statistical fluctuation"
+                }
+            }
+            
+            if parameter in explanations:
+                exp = explanations[parameter]
+                st.write(
+                    f"""
+                    🔄 **{parameter.upper()}** {direction} to **{new:.1f}**
+                    
+                    • **What this controls:** {exp['meaning']}
+                    • **Visual effect:** {exp['effect']}
+                    • **Prediction:** {exp['prediction']}
+                    """
+                )
+                
             self._last_params[parameter] = new
+            self._interaction_count += 1
+
+    def _predict_theta_effect(self, theta: float) -> str:
+        """Provide specific predictions based on theta value."""
+        if theta < 30:
+            return f"Strong bias toward |0⟩: ~{np.cos(np.radians(theta/2))**2:.0%} probability"
+        elif theta > 150:
+            return f"Strong bias toward |1⟩: ~{np.sin(np.radians(theta/2))**2:.0%} probability"
+        elif 80 <= theta <= 100:
+            return "Nearly equal superposition: ~50% chance of each outcome"
+        else:
+            p0 = np.cos(np.radians(theta/2))**2
+            return f"Moderate bias: ~{p0:.0%} chance |0⟩, ~{1-p0:.0%} chance |1⟩"
 
     # --------------------------------------------------------------------------
     # After experiment completes
@@ -180,28 +493,169 @@ class DynamicExplanations:
                           basis: str) -> None:
         total = sum(counts.values())
         exp_p0 = counts.get("0", 0) / total
+        exp_p1 = counts.get("1", 0) / total
         th_p0 = theoretical["0"]
-        error = abs(exp_p0 - th_p0)
+        th_p1 = theoretical["1"]
+        error_p0 = abs(exp_p0 - th_p0)
+        error_p1 = abs(exp_p1 - th_p1)
+        
+        # Statistical significance assessment
+        expected_std = np.sqrt(th_p0 * th_p1 / total)
+        significance = error_p0 / expected_std if expected_std > 0 else 0
+        
         st.success(
-            f"✅ Experimental probability P(|0⟩) = {exp_p0:.2f} "
-            f"(theory {th_p0:.2f}). Deviation = {error:.2%}."
+            f"""
+            ✅ **Experimental Results Analysis**
+            
+            **Measurement Outcomes in {basis.title()} Basis:**
+            • P(|0⟩): {exp_p0:.3f} experimental vs {th_p0:.3f} theoretical (Δ = {error_p0:.1%})
+            • P(|1⟩): {exp_p1:.3f} experimental vs {th_p1:.3f} theoretical (Δ = {error_p1:.1%})
+            
+            **Statistical Assessment:**
+            • Expected standard deviation: ±{expected_std:.3f}
+            • Deviation significance: {significance:.1f}σ
+            """
         )
-        if error > 0.1:
+        
+        # Provide context-appropriate feedback
+        if error_p0 > 0.15:
             st.warning(
-                "Noticeable deviation—try increasing **shots** or checking for "
-                "noise sources."
+                """
+                🔍 **Large Deviation Detected**
+                
+                **Possible causes:**
+                • Low number of shots (increase for better statistics)
+                • Quantum noise in the simulation
+                • Systematic measurement errors
+                
+                **Recommendation:** Try increasing the number of shots to 1000+ 
+                for more stable results.
+                """
+            )
+        elif error_p0 > 0.05:
+            st.info(
+                """
+                📊 **Moderate Statistical Fluctuation**
+                
+                This level of deviation is normal due to the probabilistic nature 
+                of quantum measurements. Real quantum experiments always show 
+                similar statistical fluctuations.
+                """
+            )
+        else:
+            st.success(
+                """
+                🎯 **Excellent Agreement!**
+                
+                Your experimental results closely match the theoretical predictions. 
+                This demonstrates the power of quantum mechanical calculations to 
+                predict real-world outcomes.
+                """
+            )
+        
+        # Basis-specific insights
+        self._provide_basis_specific_insights(basis, exp_p0, th_p0)
+
+    def _provide_basis_specific_insights(self, basis: str, exp_p0: float, th_p0: float) -> None:
+        """Provide insights specific to the measurement basis used."""
+        if basis == "rectilinear":
+            st.markdown(
+                f"""
+                **🔍 Rectilinear Basis Insights:**
+                The {exp_p0:.1%} probability for |0⟩ directly reflects the θ parameter 
+                you set. This basis reveals the "natural" population balance of your quantum state.
+                """
+            )
+        elif basis == "diagonal":
+            st.markdown(
+                f"""
+                **🔍 Diagonal Basis Insights:**
+                This measurement is sensitive to both θ and φ parameters. The quantum 
+                phase φ creates interference effects that become visible in this basis.
+                """
+            )
+        elif basis == "circular":
+            st.markdown(
+                f"""
+                **🔍 Circular Basis Insights:**
+                Circular measurements reveal the most complex quantum interference effects. 
+                The results depend on both the probability amplitudes and their relative phases.
+                """
             )
 
     # --------------------------------------------------------------------------
     # Learning pathway suggestions
     # --------------------------------------------------------------------------
     def provide_next_steps(self, level: str) -> None:
-        if level == "beginner":
-            st.info("Next ➡️ Vary **φ** to see how phase only affects diagonal/circular bases.")
-        elif level == "intermediate":
-            st.info("Next ➡️ Compare outcome statistics across two bases to visualise uncertainty.")
-        else:
-            st.info("Next ➡️ Enable noise modelling and investigate security implications for BB84.")
+        next_steps = {
+            "beginner": [
+                "Try setting θ to 0°, 90°, and 180° to see pure states",
+                "Vary φ from 0° to 180° and observe how it affects diagonal measurements",
+                "Compare measurement results between rectilinear and diagonal bases",
+                "Increase the number of shots to see how statistical accuracy improves"
+            ],
+            "intermediate": [
+                "Explore how φ creates different interference patterns in each basis",
+                "Try to create states that give 50% probability in all three bases",
+                "Compare uncertainty relationships between different measurement pairs",
+                "Investigate how measurement choice affects the final quantum state"
+            ],
+            "advanced": [
+                "Enable noise modeling to simulate realistic quantum channels",
+                "Analyze the security implications for BB84 key distribution",
+                "Study how decoherence affects the purity of quantum states",
+                "Implement error correction strategies for noisy quantum measurements"
+            ]
+        }
+        
+        st.info(
+            f"""
+            📚 **Suggested Next Explorations:**
+            
+            {chr(10).join([f"• {step}" for step in next_steps[level]])}
+            
+            **Remember:** The best way to understand quantum mechanics is through 
+            hands-on experimentation. Try different parameter combinations and 
+            observe how they affect the results!
+            """
+        )
+
+    # --------------------------------------------------------------------------
+    # Contextual help system
+    # --------------------------------------------------------------------------
+    def provide_contextual_help(self, user_action: str, current_state: dict) -> None:
+        """Provide help based on what the user is currently doing."""
+        if user_action == "first_visit":
+            st.info(
+                """
+                👋 **Welcome to Quantum Polarization Explorer!**
+                
+                This interactive tool helps you understand quantum mechanics through 
+                photon polarization experiments. Start by adjusting the θ (theta) 
+                parameter to see how it affects measurement probabilities.
+                """
+            )
+        elif user_action == "changed_basis":
+            st.info(
+                """
+                🔄 **Measurement Basis Changed**
+                
+                You're now measuring in a different basis! This is like asking a 
+                different "question" about the quantum state. Notice how the same 
+                quantum state can give different measurement probabilities depending 
+                on which basis you choose.
+                """
+            )
+        elif user_action == "extreme_parameters":
+            st.warning(
+                """
+                ⚠️ **Extreme Parameter Values**
+                
+                You've set parameters to extreme values. While this can be instructive 
+                for understanding limiting cases, try intermediate values to see the 
+                full richness of quantum superposition effects.
+                """
+            )
 
 class EnhancedPolarizationModule:
     """Enhanced polarization module with advanced learning analytics"""
