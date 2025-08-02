@@ -1,0 +1,9 @@
+streamlit>=1.28.0
+qiskit>=0.45.0
+qiskit-aer>=0.12.0
+numpy>=1.24.0
+matplotlib>=3.7.0
+plotly>=5.15.0
+pandas>=2.0.0
+scipy>=1.10.0
+pillow>=9.5.0
